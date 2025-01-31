@@ -15,8 +15,8 @@
             "dest" : "api/key.py"
         },
         {
-            "src": "/(.*)",
-            "dest": "/templates/$1"
+            "src": "/",
+            "dest": "/templates/index.html"
         }
     ]
 }
