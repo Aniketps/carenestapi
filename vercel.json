@@ -3,10 +3,6 @@
         {
             "src": "api/key.py",
             "use": "@vercel/python"
-        },
-        {
-            "src" : "tempates/index.html",
-            "use" : 
         }
     ],
     "routes" : [
