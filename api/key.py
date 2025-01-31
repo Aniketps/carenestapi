@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, jsonify, render_template
 
 app = Flask(__name__, template_folder="../templates")
 
@@ -8,15 +8,8 @@ def main():
 
 @app.route("/test", methods=["GET"])
 def test():
-    return jsonify({
-        "response" : "Success"
-    })
+    return jsonify({"response": "Success"})
 
 @app.route("/key", methods=["GET"])
 def key():
-    return jsonify({
-        "response" : "Finished"
-    })
-    
-if __name__ == "__main__":
-    app.run()
+    return jsonify({"response": "Finished"})
