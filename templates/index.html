@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Space Control</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        body {
+            background: black;
+            overflow: hidden;
+            color: #0aff9d;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Space Background Animation */
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 0, 40, 0.8) 20%, black 80%);
+            z-index: -1;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.4;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Container */
+        .container {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            border-radius: 25px;
+            box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(10px);
+            width: 350px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #0aff9d;
+        }
+
+        .status-card {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, 0.15);
+            animation: flicker 1.5s infinite alternate;
+        }
+        
+
+        #api-status.loading {
+            color: yellow;
+        }
+
+        #api-status.online {
+            color: #0aff9d;
+        }
+
+        #api-status.offline {
+            color: #ff3860;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translate(-200px, -200px) rotate(325deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(800px, 800px) rotate(325deg);
+                opacity: 0;
+            }
+        }
+        
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 100px; 
+            background: white;
+            opacity: 0.7;
+            animation: shoot 1s linear infinite;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="background">
+        <div class="stars"></div>
+    </div>
+
+    <div class="container">
+        <h1>API TEST</h1>
+        <div class="status-card">
+            <p>Test result</p>
+            <p>Response: <span id="api-status" class="loading">Checking...</span></p>
+        </div>
+    </div>
+
+    <script>
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const apiUrl = "http://127.0.0.1:5000/test";
+            const apiStatus = document.getElementById("api-status");
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("API Offline");
+                    }
+                    return response.json(); // Parse JSON response
+                })
+                .then(data => {
+                    apiStatus.textContent = JSON.stringify(data["response"], null, 2); // Display JSON data
+                    apiStatus.classList.remove("loading");
+                    apiStatus.classList.add("online");
+                })
+                .catch(() => {
+                    apiStatus.textContent = "🔴 Offline";
+                    apiStatus.classList.remove("loading");
+                    apiStatus.classList.add("offline");
+                });
+
+            // Create shooting stars
+            for (let i = 0; i < 7; i++) {
+                let star = document.createElement("div");
+                star.className = "shooting-star";
+                star.style.left = Math.random() * window.innerWidth + "px";
+                star.style.top = Math.random() * window.innerHeight + "px";
+                star.style.animationDelay = Math.random() * 5 + "s";
+                document.body.appendChild(star);
+            }
+                        
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+    "builds" : [
+        {
+            "src": "api/key.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "routes" : [
+        {
+            "src" : "/key",
+            "dest" : "api/key.py"
+        },
+        {
+            "src" : "/test",
+            "dest" : "api/key.py"
+        }
+    ]
+}
